@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChatAutomation", "ChatAutomation.vcxproj", "{288B971B-DCDE-4E11-8332-E29459D1D2D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{288B971B-DCDE-4E11-8332-E29459D1D2D6}.Debug|x64.ActiveCfg = Debug|x64
+		{288B971B-DCDE-4E11-8332-E29459D1D2D6}.Debug|x64.Build.0 = Debug|x64
+		{288B971B-DCDE-4E11-8332-E29459D1D2D6}.Debug|x86.ActiveCfg = Debug|Win32
+		{288B971B-DCDE-4E11-8332-E29459D1D2D6}.Debug|x86.Build.0 = Debug|Win32
+		{288B971B-DCDE-4E11-8332-E29459D1D2D6}.Release|x64.ActiveCfg = Release|x64
+		{288B971B-DCDE-4E11-8332-E29459D1D2D6}.Release|x64.Build.0 = Release|x64
+		{288B971B-DCDE-4E11-8332-E29459D1D2D6}.Release|x86.ActiveCfg = Release|Win32
+		{288B971B-DCDE-4E11-8332-E29459D1D2D6}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EECB5995-4568-454C-BCC2-8C05D92AE8F1}
+	EndGlobalSection
+EndGlobal
