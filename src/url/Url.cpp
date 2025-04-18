@@ -23,23 +23,16 @@ namespace Url {
         const std::string& csNumber,
         const std::string& siteName,
         const std::string& centerType,
-        const std::vector<std::string>& users,
-        const std::vector<std::string>& extraEmails
+        const std::vector<std::string>& recipients
     ) {
         std::string url = "https://teams.microsoft.com/l/chat/0/0?users=";
-        // core users
-        for (size_t i = 0; i < users.size(); ++i) {
-            url += users[i];
-            if (i + 1 < users.size() || !extraEmails.empty())
-                url += ",";
+        // append each recipient with comma
+        for (size_t i = 0; i < recipients.size(); ++i) {
+            url += UrlEncode(recipients[i]);
+            if (i + 1 < recipients.size())
+                url += ',';
         }
-        // extra emails
-        for (size_t i = 0; i < extraEmails.size(); ++i) {
-            url += extraEmails[i];
-            if (i + 1 < extraEmails.size())
-                url += ",";
-        }
-        // topic name
+        // build and append the topic name
         std::string topic = "GROUPCHATTITLE " + csNumber + " " + centerType + " - " + siteName;
         url += "&topicName=" + UrlEncode(topic);
         return url;

@@ -8,8 +8,7 @@ namespace Url {
         const std::string& csNumber,
         const std::string& siteName,
         const std::string& centerType,
-        const std::vector<std::string>& users,
-        const std::vector<std::string>& extraEmails
+        const std::vector<std::string>& recipients
     );
     void OpenURL(const std::string& url);
 }

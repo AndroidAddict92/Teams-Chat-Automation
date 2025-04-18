@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <cstdlib>
+#include <iostream>
 
 
 UIManager::UIManager(GLFWwindow* window)
@@ -104,11 +105,10 @@ void UIManager::ApplyTheme() {
 }
 
 void UIManager::DrawMainWindow() {
-    ImGui::SetNextWindowSize(ImVec2((float)Config::WindowWidth, (float)Config::WindowHeight));
-    ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+    ImGui::SetNextWindowSize({ (float)Config::WindowWidth, (float)Config::WindowHeight });
+    ImGui::SetNextWindowPos({ 0, 0 }, ImGuiCond_Always);
 
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0));
-
     ImGui::Begin("GUI", nullptr,
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoMove |
@@ -118,17 +118,19 @@ void UIManager::DrawMainWindow() {
     );
 
     ImGui::Text("Select Core Users:");
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < (int)Config::PredefinedUsers.size(); ++i) {
         ImGui::Checkbox(Config::PredefinedNames[i], &userSelected_[i]);
     }
     ImGui::Spacing();
 
     ImGui::Text("Additional Emails:");
-    ImGui::InputText("##email", emailBuffer_, IM_ARRAYSIZE(emailBuffer_));
+    ImGui::InputText("##EmailInput", emailBuffer_, IM_ARRAYSIZE(emailBuffer_));
     ImGui::SameLine();
     if (ImGui::Button("Add")) {
         std::string e{ emailBuffer_ };
-        if (!e.empty() && std::find(addedEmails_.begin(), addedEmails_.end(), e) == addedEmails_.end()) {
+        if (!e.empty() &&
+            std::find(addedEmails_.begin(), addedEmails_.end(), e) == addedEmails_.end())
+        {
             addedEmails_.push_back(e);
             emailBuffer_[0] = '\0';
         }
@@ -140,7 +142,7 @@ void UIManager::DrawMainWindow() {
     ImGui::Spacing();
 
     ImGui::Text("Added Emails:");
-    ImGui::BeginChild("EmailsList", ImVec2(0, 100), true);
+    ImGui::BeginChild("EmailsList", { 0,100 }, true);
     for (size_t i = 0; i < addedEmails_.size(); ++i) {
         ImGui::BulletText("%s", addedEmails_[i].c_str());
         ImGui::SameLine();
@@ -152,40 +154,51 @@ void UIManager::DrawMainWindow() {
     ImGui::EndChild();
     ImGui::Spacing();
 
-    ImGui::Text("5 Digit CS Number:");
-    ImGui::SetNextItemWidth(75.0f);
-    ImGui::InputText("##cs", csNumber_, IM_ARRAYSIZE(csNumber_));
+    ImGui::Text("5-Digit CS Number:");
+    ImGui::SetNextItemWidth(100.0f);
+    ImGui::InputText("##CSNumberInput", csNumber_, IM_ARRAYSIZE(csNumber_));
+    ImGui::Spacing();
 
     ImGui::Text("Site Name:");
-    ImGui::SetNextItemWidth(175.0f);
-    ImGui::InputText("##site", siteName_, IM_ARRAYSIZE(siteName_));
+    ImGui::SetNextItemWidth(200.0f);
+    ImGui::InputText("##SiteNameInput", siteName_, IM_ARRAYSIZE(siteName_));
     ImGui::Spacing();
 
     ImGui::Text("Center Type:");
-    ImGui::Combo("##type", &centerTypeIdx_,
+    ImGui::Combo("##CenterTypeCombo",
+        &centerTypeIdx_,
         Config::CenterTypes.data(),
         (int)Config::CenterTypes.size());
     ImGui::Spacing();
 
     if (ImGui::Button("Create Chat")) {
-        std::vector<std::string> sel;
-        for (int i = 0; i < 3; ++i)
+        std::vector<std::string> recipients;
+        for (int i = 0; i < (int)Config::PredefinedUsers.size(); ++i) {
             if (userSelected_[i])
-                sel.push_back(Config::PredefinedUsers[i]);
+                recipients.push_back(Config::PredefinedUsers[i]);
+        }
+        recipients.insert(
+            recipients.end(),
+            addedEmails_.begin(),
+            addedEmails_.end()
+        );
+
+        std::cout << "Recipients:\n";
+        for (auto& e : recipients)
+            std::cout << "  " << e << "\n";
 
         auto url = Url::GenerateChatURL(
             csNumber_,
             siteName_,
             Config::CenterTypes[centerTypeIdx_],
-            sel,
-            addedEmails_
+            recipients
         );
+        std::cout << "URL: " << url << "\n";
         Url::OpenURL(url);
     }
     ImGui::SameLine();
-    if (ImGui::Button("Exit")) {
+    if (ImGui::Button("Exit"))
         std::exit(0);
-    }
 
     ImGui::End();
     ImGui::PopStyleColor();
